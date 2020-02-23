@@ -1,0 +1,24 @@
+[
+    {
+        "id": 0,
+        "server_name": "rtxtitan",
+        "ip_addr": "192.168.15.253",
+        "hub_endpoint": "/",
+        "hub_port": 80,
+        "monitor_port": 9233,
+        "monitor_endpoint": "/server/index.php",
+        "gpu_capable": "true",
+        "comment": ""
+    },
+    {
+        "id": 1,
+        "server_name": "localtest",
+        "ip_addr": "127.0.0.1",
+        "hub_endpoint": "/",
+        "hub_port": 80,
+        "monitor_port": 80,
+        "monitor_endpoint": "/server/index.php",
+        "gpu_capable": "false",
+        "comment": ""
+    }
+]
