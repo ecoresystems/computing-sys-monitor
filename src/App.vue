@@ -6,7 +6,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      unique-opened="true"
+      unique-opened:true
     >
       <el-menu-item index="1">Konomi Lab Computing Hub</el-menu-item>
 
@@ -15,8 +15,11 @@
         <div v-for="server in registered_servers" :key="server.id">
           <el-menu-item style="vertical-align:middle;" index="server.id">
             <div>
-            {{server.server_name}}
-            <i class="el-icon-circle-check" style="float:right;color:#67C23A"></i>
+              {{server.server_name}}
+              <i
+                class="el-icon-circle-check"
+                style="float:right;color:#67C23A"
+              ></i>
             </div>
           </el-menu-item>
         </div>
@@ -30,7 +33,8 @@
       </el-menu-item>
     </el-menu>
     <div>
-      <el-button @click="get_registered_server_info">Start</el-button>
+      <el-button @click="testRun">Start</el-button>
+      {{servers_status}}
     </div>
   </div>
 </template>
@@ -54,7 +58,8 @@ export default {
       ],
       registered_servers: null,
       response_data: null,
-      search_results: null
+      search_results: null,
+      servers_status: []
     };
   },
 
@@ -66,12 +71,18 @@ export default {
 
   methods: {
     testRun() {
-      for (let i = 0; i < this.available_modules.length; i++) {
-        console.log(this.available_modules[i]);
-        this.get_status(
-          "http://localhost/server/index.php",
-          this.available_modules[i]
-        );
+      for (let j = 0; j < this.registered_servers.length; j++) {
+        let current_server = this.registered_servers[j];
+        let endpoint =
+          "http://" +
+          current_server.ip_addr +
+          ":" +
+          current_server.monitor_port +
+          current_server.monitor_endpoint;
+        for (let i = 0; i < this.available_modules.length; i++) {
+          console.log(this.available_modules[i]);
+          this.get_status(endpoint, this.available_modules[i]);
+        }
       }
     },
 
@@ -79,7 +90,6 @@ export default {
       this.$axios.get("/src/assets/registered_servers.json").then(response => {
         var self = this;
         self.registered_servers = response.data;
-
         console.log(self.registered_servers);
       });
     },
@@ -87,9 +97,8 @@ export default {
     get_status(api_endpoint, module) {
       this.$axios.get(api_endpoint + "?module=" + module).then(response => {
         var self = this;
-        self.response_data = response.data;
-        console.log(self.response_data);
-        this.startHacking(module, self.response_data);
+        self.servers_status.push(response.data)
+        this.startHacking(module, response.data);
       });
     },
 
