@@ -25,7 +25,7 @@
                 </div>
             </el-submenu>
 
-            <el-menu-item index="3" disabled><a href="src/vpn.html" target="_blank">VPN</a></el-menu-item>
+            <el-menu-item index="3" disabled>VPN</el-menu-item>
             <el-menu-item index="4" style="float:right">
                 <a href="http://hdi.ait.kyushu-u.ac.jp" target="_black">
                     <img src="./assets/logo.png" height="50px"/>
@@ -40,8 +40,13 @@
 </template>
 
 <script>
+    import VPN from "./components/VPN.vue";
+
     export default {
-        name:"App",
+        name:"app",
+        components:{
+            VPN
+        },
         data() {
             return {
                 available_modules: [
